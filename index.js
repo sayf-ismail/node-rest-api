@@ -32,7 +32,10 @@ app.get('/comments', async(req, res) => {
     const comments = axiosComments.data;
     const filteredComments = comments.filter(comment => {
       return Object.keys(req.query).every(key => {
-        return comment[key] === req.query[key];
+        if(key === 'postId' || key === 'id'){
+          return parseInt(req.query[key]) === comment[key]
+        }
+        return req.query[key] === comment[key];
       });
     });
     res.json(filteredComments);
